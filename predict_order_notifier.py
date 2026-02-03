@@ -308,19 +308,20 @@ I'll send you real-time notifications when your limit orders are filled on predi
 
 <b>How to use:</b>
 
-1️⃣ <b>Register your wallet:</b>
-   <code>/register 0xYourWalletAddress</code>
+1️⃣ <b>Find your Predict portfolio address:</b>
+   • Go to <a href="https://predict.fun">predict.fun</a>
+   • Click on your portfolio (top-right corner)
+   • Copy the address shown below your username
 
-2️⃣ That's it! You'll receive notifications when orders fill.
+2️⃣ <b>Register with the bot:</b>
+   <code>/register 0xYourPortfolioAddress</code>
+
+3️⃣ That's it! You'll receive notifications when orders fill.
 
 <b>Other commands:</b>
 • /status - Check your registration
 • /stop - Unregister and stop notifications
 • /help - Show this message
-
-<b>Which address to use?</b>
-• If you use MetaMask: Your connected wallet address
-• If you use email login: Your Privy/deposit address from predict.fun settings
 """
     bot.send_message(chat_id, message.strip())
 
@@ -329,9 +330,12 @@ def handle_register(bot: TelegramBot, db: UserDatabase, chat_id: str, username: 
     """Handle /register command"""
     if not args:
         bot.send_message(chat_id, 
-            "❌ Please provide your wallet address.\n\n"
-            "<b>Usage:</b> <code>/register 0xYourWalletAddress</code>\n\n"
-            "You can find this in your predict.fun account settings or your wallet app."
+            "❌ Please provide your Predict portfolio address.\n\n"
+            "<b>Usage:</b> <code>/register 0xYourPortfolioAddress</code>\n\n"
+            "<b>How to find it:</b>\n"
+            "1. Go to predict.fun\n"
+            "2. Click your portfolio (top-right)\n"
+            "3. Copy the address below your username"
         )
         return
     
@@ -339,7 +343,7 @@ def handle_register(bot: TelegramBot, db: UserDatabase, chat_id: str, username: 
     
     if not is_valid_eth_address(wallet_address):
         bot.send_message(chat_id,
-            "❌ Invalid wallet address format.\n\n"
+            "❌ Invalid address format.\n\n"
             "The address should:\n"
             "• Start with <code>0x</code>\n"
             "• Be followed by 40 hexadecimal characters\n\n"
@@ -353,7 +357,7 @@ def handle_register(bot: TelegramBot, db: UserDatabase, chat_id: str, username: 
     short_addr = f"{wallet_address[:6]}...{wallet_address[-4:]}"
     bot.send_message(chat_id,
         f"✅ <b>Successfully registered!</b>\n\n"
-        f"📍 Wallet: <code>{short_addr}</code>\n\n"
+        f"📍 Portfolio: <code>{short_addr}</code>\n\n"
         f"You'll now receive notifications when your limit orders are filled on predict.fun.\n\n"
         f"Use /stop to unregister."
     )
@@ -366,7 +370,7 @@ def handle_status(bot: TelegramBot, db: UserDatabase, chat_id: str):
     if not user:
         bot.send_message(chat_id,
             "❌ You're not registered yet.\n\n"
-            "Use <code>/register 0xYourWalletAddress</code> to start receiving notifications."
+            "Use <code>/register 0xYourPortfolioAddress</code> to start receiving notifications."
         )
         return
     
@@ -377,7 +381,7 @@ def handle_status(bot: TelegramBot, db: UserDatabase, chat_id: str):
     
     bot.send_message(chat_id,
         f"📊 <b>Your Status</b>\n\n"
-        f"📍 Wallet: <code>{short_addr}</code>\n"
+        f"📍 Portfolio: <code>{short_addr}</code>\n"
         f"📅 Registered: {registered_at[:10]}\n"
         f"📬 Orders tracked: {seen_count}\n"
         f"✅ Status: Active\n\n"
