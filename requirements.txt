@@ -1,0 +1,10 @@
+# Predict.fun Telegram Order Notifier - Dependencies
+
+# HTTP requests
+requests>=2.28.0
+
+# WebSocket client (optional, for real-time updates)
+websocket-client>=1.5.0
+
+# Environment variable management (optional)
+python-dotenv>=1.0.0
